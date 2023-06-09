@@ -1,4 +1,4 @@
 deployment:
   tasks:
-    - export DEPLOYPATH=/home2/mamamoo5/
+    - export DEPLOYPATH=/home2/mamamoo5/public_html
     - /bin/cp -R images $DEPLOYPATH
