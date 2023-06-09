@@ -1,4 +1,4 @@
 deployment:
   tasks:
-    - export DEPLOYPATH=/home2/mamamoo5/repositories/mamamoonhostelphp
+    - export DEPLOYPATH=/home2/mamamoo5/
     - /bin/cp -R images $DEPLOYPATH
