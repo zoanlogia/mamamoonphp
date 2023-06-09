@@ -1,0 +1,61 @@
+#Specify a default home page (index page)
+DirectoryIndex index.html
+#Allow only specified IPs to access your site
+# deny from all
+# allow from 64.95.219.140
+# allow from 210.23.45.67
+# Redirect all pages from olddomain.com
+# to newdomain.com
+Options +FollowSymLinks
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^www.olddomain.com$ [OR]
+RewriteCond %{HTTP_HOST} ^olddomain.com$
+RewriteRule ^(.*)$ http://www.newdomain.com/$1 [R=301,L]
+#Prevent subfolder loading. This goes
+# in htaccess for the primary domain
+RewriteCond %{HTTP_HOST} ^primary.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www.primary.com$
+RewriteRule ^addon.com/?(.*)$ "http://www.addon.com/$1" [R=301,L]
+#Prevent subdomain name loading.
+#This goes in htaccess for the primary domain
+RewriteCond %{HTTP_HOST} ^subname.primary.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www.subname.primary.com$
+RewriteRule ^(.*)$ "http://www.addon.com/$1" [R=301,L]
+# Never use www in the domain
+# Replace 'mamamoon.com' with your domain name
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^www.(([a-z0-9_]+.)?mamamoon.com)$ [NC]
+RewriteRule .? http://%1%{REQUEST_URI} [R=301,L]
+# Always use www in the domain
+# Replace 'mamamoon.com' with your domain name
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^([a-z.]+)?mamamoon.com$ [NC]
+RewriteCond %{HTTP_HOST} !^www. [NC]
+RewriteRule .? http://www.%1mamamoon.com%{REQUEST_URI} [R=301,L]
+# Set a default home directory, (this subfolder always loads)
+# Replace 'folder' with your subfolder name
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^$ /folder/ [R=301,L]
+</IfModule>
+# Rename a directory and force visitors to the new name
+# Replace 'old' with your old folder name
+# Replace 'new' with your new folder name
+RewriteEngine on
+RewriteRule ^/?old([a-z/.]*)$ /new$1 [R=301,L]
+# Always use https for secure connections
+# Replace 'www.mamamoon.com' with your domain name
+# (as it appears on your SSL certificate)
+RewriteEngine On
+RewriteCond %{SERVER_PORT} 80
+RewriteRule ^(.*)$ https://www.mamamoon.com/$1 [R=301,L]
+# Block traffic from multiple referrers
+RewriteEngine on
+Options +FollowSymlinks
+RewriteCond %{HTTP_REFERER} badsite.com [NC,OR]
+RewriteCond %{HTTP_REFERER} badforum.com [NC,OR]
+RewriteCond %{HTTP_REFERER} badsearchengine.com [NC]
+RewriteRule .* - [F]
+#Do not allow these file types to be called
+RewriteEngine on
+RewriteRule .*.(jpg|jpeg|gif|png|bmp|exe|swf)$ - [F,NC]
